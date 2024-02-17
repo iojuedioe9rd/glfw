@@ -35,7 +35,6 @@
 #include <stdarg.h>
 #include <assert.h>
 
-
 // NOTE: The global variables below comprise all mutable global data in GLFW
 //       Any other mutable global variable is a bug
 
@@ -94,12 +93,12 @@ static void terminate(void)
     memset(&_glfw.callbacks, 0, sizeof(_glfw.callbacks));
 
     while (_glfw.windowListHead)
-        glfwDestroyWindow((GLFWwindow*) _glfw.windowListHead);
+        glfwDestroyWindow((GLFWwindow*)_glfw.windowListHead);
 
     while (_glfw.cursorListHead)
-        glfwDestroyCursor((GLFWcursor*) _glfw.cursorListHead);
+        glfwDestroyCursor((GLFWcursor*)_glfw.cursorListHead);
 
-    for (i = 0;  i < _glfw.monitorCount;  i++)
+    for (i = 0; i < _glfw.monitorCount; i++)
     {
         _GLFWmonitor* monitor = _glfw.monitors[i];
         if (monitor->originalRamp.size)
@@ -135,7 +134,6 @@ static void terminate(void)
     memset(&_glfw, 0, sizeof(_glfw));
 }
 
-
 //////////////////////////////////////////////////////////////////////////
 //////                       GLFW internal API                      //////
 //////////////////////////////////////////////////////////////////////////
@@ -148,7 +146,7 @@ size_t _glfwEncodeUTF8(char* s, uint32_t codepoint)
     size_t count = 0;
 
     if (codepoint < 0x80)
-        s[count++] = (char) codepoint;
+        s[count++] = (char)codepoint;
     else if (codepoint < 0x800)
     {
         s[count++] = (codepoint >> 6) | 0xc0;
@@ -256,7 +254,6 @@ void _glfw_free(void* block)
         _glfw.allocator.deallocate(block, _glfw.allocator.user);
 }
 
-
 //////////////////////////////////////////////////////////////////////////
 //////                         GLFW event API                       //////
 //////////////////////////////////////////////////////////////////////////
@@ -335,7 +332,6 @@ void _glfwInputError(int code, const char* format, ...)
         _glfwErrorCallback(code, description);
 }
 
-
 //////////////////////////////////////////////////////////////////////////
 //////                        GLFW public API                       //////
 //////////////////////////////////////////////////////////////////////////
@@ -351,7 +347,7 @@ GLFWAPI int glfwInit(void)
     _glfw.allocator = _glfwInitAllocator;
     if (!_glfw.allocator.allocate)
     {
-        _glfw.allocator.allocate   = defaultAllocate;
+        _glfw.allocator.allocate = defaultAllocate;
         _glfw.allocator.reallocate = defaultReallocate;
         _glfw.allocator.deallocate = defaultDeallocate;
     }
@@ -398,28 +394,28 @@ GLFWAPI void glfwInitHint(int hint, int value)
 {
     switch (hint)
     {
-        case GLFW_JOYSTICK_HAT_BUTTONS:
-            _glfwInitHints.hatButtons = value;
-            return;
-        case GLFW_ANGLE_PLATFORM_TYPE:
-            _glfwInitHints.angleType = value;
-            return;
-        case GLFW_PLATFORM:
-            _glfwInitHints.platformID = value;
-            return;
-        case GLFW_COCOA_CHDIR_RESOURCES:
-            _glfwInitHints.ns.chdir = value;
-            return;
-        case GLFW_COCOA_MENUBAR:
-            _glfwInitHints.ns.menubar = value;
-            return;
-        case GLFW_X11_XCB_VULKAN_SURFACE:
-            _glfwInitHints.x11.xcbVulkanSurface = value;
-            return;
+    case GLFW_JOYSTICK_HAT_BUTTONS:
+        _glfwInitHints.hatButtons = value;
+        return;
+    case GLFW_ANGLE_PLATFORM_TYPE:
+        _glfwInitHints.angleType = value;
+        return;
+    case GLFW_PLATFORM:
+        _glfwInitHints.platformID = value;
+        return;
+    case GLFW_COCOA_CHDIR_RESOURCES:
+        _glfwInitHints.ns.chdir = value;
+        return;
+    case GLFW_COCOA_MENUBAR:
+        _glfwInitHints.ns.menubar = value;
+        return;
+    case GLFW_X11_XCB_VULKAN_SURFACE:
+        _glfwInitHints.x11.xcbVulkanSurface = value;
+        return;
     }
 
     _glfwInputError(GLFW_INVALID_ENUM,
-                    "Invalid init hint 0x%08X", hint);
+        "Invalid init hint 0x%08X", hint);
 }
 
 GLFWAPI void glfwInitAllocator(const GLFWallocator* allocator)
@@ -479,4 +475,3 @@ GLFWAPI GLFWerrorfun glfwSetErrorCallback(GLFWerrorfun cbfun)
     _GLFW_SWAP(GLFWerrorfun, _glfwErrorCallback, cbfun);
     return cbfun;
 }
-

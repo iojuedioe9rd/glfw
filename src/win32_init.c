@@ -32,14 +32,14 @@
 #include <stdlib.h>
 
 static const GUID _glfw_GUID_DEVINTERFACE_HID =
-    {0x4d1e55b2,0xf16f,0x11cf,{0x88,0xcb,0x00,0x11,0x11,0x00,0x00,0x30}};
+{ 0x4d1e55b2,0xf16f,0x11cf,{0x88,0xcb,0x00,0x11,0x11,0x00,0x00,0x30} };
 
 #define GUID_DEVINTERFACE_HID _glfw_GUID_DEVINTERFACE_HID
 
 #if defined(_GLFW_USE_HYBRID_HPG) || defined(_GLFW_USE_OPTIMUS_HPG)
 
 #if defined(_GLFW_BUILD_DLL)
- #pragma message("These symbols must be exported by the executable and have no effect in a DLL")
+#pragma message("These symbols must be exported by the executable and have no effect in a DLL")
 #endif
 
 // Executables (but not DLLs) exporting this symbol with this value will be
@@ -75,7 +75,7 @@ static GLFWbool loadLibraries(void)
     if (!_glfw.win32.user32.instance)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                             "Win32: Failed to load user32.dll");
+            "Win32: Failed to load user32.dll");
         return GLFW_FALSE;
     }
 
@@ -111,7 +111,7 @@ static GLFWbool loadLibraries(void)
             NULL
         };
 
-        for (i = 0;  names[i];  i++)
+        for (i = 0; names[i]; i++)
         {
             _glfw.win32.xinput.instance = _glfwPlatformLoadModule(names[i]);
             if (_glfw.win32.xinput.instance)
@@ -313,7 +313,7 @@ static void createKeyTables(void)
     _glfw.win32.keycodes[0x037] = GLFW_KEY_KP_MULTIPLY;
     _glfw.win32.keycodes[0x04A] = GLFW_KEY_KP_SUBTRACT;
 
-    for (scancode = 0;  scancode < 512;  scancode++)
+    for (scancode = 0; scancode < 512; scancode++)
     {
         if (_glfw.win32.keycodes[scancode] > 0)
             _glfw.win32.scancodes[_glfw.win32.keycodes[scancode]] = scancode;
@@ -328,18 +328,18 @@ static GLFWbool createHelperWindow(void)
 
     _glfw.win32.helperWindowHandle =
         CreateWindowExW(WS_EX_OVERLAPPEDWINDOW,
-                        _GLFW_WNDCLASSNAME,
-                        L"GLFW message window",
-                        WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
-                        0, 0, 1, 1,
-                        NULL, NULL,
-                        GetModuleHandleW(NULL),
-                        NULL);
+            _GLFW_WNDCLASSNAME,
+            L"GLFW message window",
+            WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+            0, 0, 1, 1,
+            NULL, NULL,
+            GetModuleHandleW(NULL),
+            NULL);
 
     if (!_glfw.win32.helperWindowHandle)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                             "Win32: Failed to create helper window");
+            "Win32: Failed to create helper window");
         return GLFW_FALSE;
     }
 
@@ -357,8 +357,8 @@ static GLFWbool createHelperWindow(void)
 
         _glfw.win32.deviceNotificationHandle =
             RegisterDeviceNotificationW(_glfw.win32.helperWindowHandle,
-                                        (DEV_BROADCAST_HDR*) &dbi,
-                                        DEVICE_NOTIFY_WINDOW_HANDLE);
+                (DEV_BROADCAST_HDR*)&dbi,
+                DEVICE_NOTIFY_WINDOW_HANDLE);
     }
 
     while (PeekMessageW(&msg, _glfw.win32.helperWindowHandle, 0, 0, PM_REMOVE))
@@ -367,9 +367,8 @@ static GLFWbool createHelperWindow(void)
         DispatchMessageW(&msg);
     }
 
-   return GLFW_TRUE;
+    return GLFW_TRUE;
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 //////                       GLFW internal API                      //////
@@ -386,7 +385,7 @@ WCHAR* _glfwCreateWideStringFromUTF8Win32(const char* source)
     if (!count)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                             "Win32: Failed to convert string from UTF-8");
+            "Win32: Failed to convert string from UTF-8");
         return NULL;
     }
 
@@ -395,7 +394,7 @@ WCHAR* _glfwCreateWideStringFromUTF8Win32(const char* source)
     if (!MultiByteToWideChar(CP_UTF8, 0, source, -1, target, count))
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                             "Win32: Failed to convert string from UTF-8");
+            "Win32: Failed to convert string from UTF-8");
         _glfw_free(target);
         return NULL;
     }
@@ -414,7 +413,7 @@ char* _glfwCreateUTF8FromWideStringWin32(const WCHAR* source)
     if (!size)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                             "Win32: Failed to convert string to UTF-8");
+            "Win32: Failed to convert string to UTF-8");
         return NULL;
     }
 
@@ -423,7 +422,7 @@ char* _glfwCreateUTF8FromWideStringWin32(const WCHAR* source)
     if (!WideCharToMultiByte(CP_UTF8, 0, source, -1, target, size, NULL, NULL))
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
-                             "Win32: Failed to convert string to UTF-8");
+            "Win32: Failed to convert string to UTF-8");
         _glfw_free(target);
         return NULL;
     }
@@ -439,14 +438,14 @@ void _glfwInputErrorWin32(int error, const char* description)
     char message[_GLFW_MESSAGE_SIZE] = "";
 
     FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM |
-                       FORMAT_MESSAGE_IGNORE_INSERTS |
-                       FORMAT_MESSAGE_MAX_WIDTH_MASK,
-                   NULL,
-                   GetLastError() & 0xffff,
-                   MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                   buffer,
-                   sizeof(buffer) / sizeof(WCHAR),
-                   NULL);
+        FORMAT_MESSAGE_IGNORE_INSERTS |
+        FORMAT_MESSAGE_MAX_WIDTH_MASK,
+        NULL,
+        GetLastError() & 0xffff,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        buffer,
+        sizeof(buffer) / sizeof(WCHAR),
+        NULL);
     WideCharToMultiByte(CP_UTF8, 0, buffer, -1, message, sizeof(message), NULL, NULL);
 
     _glfwInputError(error, "%s: %s", description, message);
@@ -457,11 +456,11 @@ void _glfwInputErrorWin32(int error, const char* description)
 void _glfwUpdateKeyNamesWin32(void)
 {
     int key;
-    BYTE state[256] = {0};
+    BYTE state[256] = { 0 };
 
     memset(_glfw.win32.keynames, 0, sizeof(_glfw.win32.keynames));
 
-    for (key = GLFW_KEY_SPACE;  key <= GLFW_KEY_LAST;  key++)
+    for (key = GLFW_KEY_SPACE; key <= GLFW_KEY_LAST; key++)
     {
         UINT vk;
         int scancode, length;
@@ -486,23 +485,23 @@ void _glfwUpdateKeyNamesWin32(void)
             vk = MapVirtualKey(scancode, MAPVK_VSC_TO_VK);
 
         length = ToUnicode(vk, scancode, state,
-                           chars, sizeof(chars) / sizeof(WCHAR),
-                           0);
+            chars, sizeof(chars) / sizeof(WCHAR),
+            0);
 
         if (length == -1)
         {
             length = ToUnicode(vk, scancode, state,
-                               chars, sizeof(chars) / sizeof(WCHAR),
-                               0);
+                chars, sizeof(chars) / sizeof(WCHAR),
+                0);
         }
 
         if (length < 1)
             continue;
 
         WideCharToMultiByte(CP_UTF8, 0, chars, 1,
-                            _glfw.win32.keynames[key],
-                            sizeof(_glfw.win32.keynames[key]),
-                            NULL, NULL);
+            _glfw.win32.keynames[key],
+            sizeof(_glfw.win32.keynames[key]),
+            NULL, NULL);
     }
 }
 
@@ -662,4 +661,3 @@ void _glfwTerminateWin32(void)
 
     freeLibraries();
 }
-

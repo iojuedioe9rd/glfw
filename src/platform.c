@@ -36,7 +36,7 @@
 static const struct
 {
     int ID;
-    GLFWbool (*connect)(int,_GLFWplatform*);
+    GLFWbool(*connect)(int, _GLFWplatform*);
 } supportedPlatforms[] =
 {
 #if defined(_GLFW_WIN32)
@@ -85,7 +85,7 @@ GLFWbool _glfwSelectPlatform(int desiredID, _GLFWplatform* platform)
         if (count == 1)
             return supportedPlatforms[0].connect(supportedPlatforms[0].ID, platform);
 
-        for (i = 0;  i < count;  i++)
+        for (i = 0; i < count; i++)
         {
             if (supportedPlatforms[i].connect(desiredID, platform))
                 return GLFW_TRUE;
@@ -95,7 +95,7 @@ GLFWbool _glfwSelectPlatform(int desiredID, _GLFWplatform* platform)
     }
     else
     {
-        for (i = 0;  i < count;  i++)
+        for (i = 0; i < count; i++)
         {
             if (supportedPlatforms[i].ID == desiredID)
                 return supportedPlatforms[i].connect(desiredID, platform);
@@ -135,7 +135,7 @@ GLFWAPI int glfwPlatformSupported(int platformID)
     if (platformID == GLFW_PLATFORM_NULL)
         return GLFW_TRUE;
 
-    for (i = 0;  i < count;  i++)
+    for (i = 0; i < count; i++)
     {
         if (platformID == supportedPlatforms[i].ID)
             return GLFW_TRUE;
@@ -186,4 +186,3 @@ GLFWAPI const char* glfwGetVersionString(void)
 #endif
         ;
 }
-

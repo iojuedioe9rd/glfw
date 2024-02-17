@@ -33,7 +33,6 @@
 
 #include "internal.h"
 
-
 static void makeContextCurrentOSMesa(_GLFWwindow* window)
 {
     if (window)
@@ -49,18 +48,18 @@ static void makeContextCurrentOSMesa(_GLFWwindow* window)
             _glfw_free(window->context.osmesa.buffer);
 
             // Allocate the new buffer (width * height * 8-bit RGBA)
-            window->context.osmesa.buffer = _glfw_calloc(4, (size_t) width * height);
-            window->context.osmesa.width  = width;
+            window->context.osmesa.buffer = _glfw_calloc(4, (size_t)width * height);
+            window->context.osmesa.width = width;
             window->context.osmesa.height = height;
         }
 
         if (!OSMesaMakeCurrent(window->context.osmesa.handle,
-                               window->context.osmesa.buffer,
-                               GL_UNSIGNED_BYTE,
-                               width, height))
+            window->context.osmesa.buffer,
+            GL_UNSIGNED_BYTE,
+            width, height))
         {
             _glfwInputError(GLFW_PLATFORM_ERROR,
-                            "OSMesa: Failed to make context current");
+                "OSMesa: Failed to make context current");
             return;
         }
     }
@@ -70,7 +69,7 @@ static void makeContextCurrentOSMesa(_GLFWwindow* window)
 
 static GLFWglproc getProcAddressOSMesa(const char* procname)
 {
-    return (GLFWglproc) OSMesaGetProcAddress(procname);
+    return (GLFWglproc)OSMesaGetProcAddress(procname);
 }
 
 static void destroyContextOSMesa(_GLFWwindow* window)
@@ -105,7 +104,6 @@ static int extensionSupportedOSMesa(const char* extension)
     return GLFW_FALSE;
 }
 
-
 //////////////////////////////////////////////////////////////////////////
 //////                       GLFW internal API                      //////
 //////////////////////////////////////////////////////////////////////////
@@ -136,7 +134,7 @@ GLFWbool _glfwInitOSMesa(void)
     if (_glfw.osmesa.handle)
         return GLFW_TRUE;
 
-    for (i = 0;  sonames[i];  i++)
+    for (i = 0; sonames[i]; i++)
     {
         _glfw.osmesa.handle = _glfwPlatformLoadModule(sonames[i]);
         if (_glfw.osmesa.handle)
@@ -172,7 +170,7 @@ GLFWbool _glfwInitOSMesa(void)
         !_glfw.osmesa.GetProcAddress)
     {
         _glfwInputError(GLFW_PLATFORM_ERROR,
-                        "OSMesa: Failed to load required entry points");
+            "OSMesa: Failed to load required entry points");
 
         _glfwTerminateOSMesa();
         return GLFW_FALSE;
@@ -198,19 +196,19 @@ void _glfwTerminateOSMesa(void)
 }
 
 GLFWbool _glfwCreateContextOSMesa(_GLFWwindow* window,
-                                  const _GLFWctxconfig* ctxconfig,
-                                  const _GLFWfbconfig* fbconfig)
+    const _GLFWctxconfig* ctxconfig,
+    const _GLFWfbconfig* fbconfig)
 {
     OSMesaContext share = NULL;
     const int accumBits = fbconfig->accumRedBits +
-                          fbconfig->accumGreenBits +
-                          fbconfig->accumBlueBits +
-                          fbconfig->accumAlphaBits;
+        fbconfig->accumGreenBits +
+        fbconfig->accumBlueBits +
+        fbconfig->accumAlphaBits;
 
     if (ctxconfig->client == GLFW_OPENGL_ES_API)
     {
         _glfwInputError(GLFW_API_UNAVAILABLE,
-                        "OSMesa: OpenGL ES is not available on OSMesa");
+            "OSMesa: OpenGL ES is not available on OSMesa");
         return GLFW_FALSE;
     }
 
@@ -244,7 +242,7 @@ GLFWbool _glfwCreateContextOSMesa(_GLFWwindow* window,
         if (ctxconfig->forward)
         {
             _glfwInputError(GLFW_VERSION_UNAVAILABLE,
-                            "OSMesa: Forward-compatible contexts not supported");
+                "OSMesa: Forward-compatible contexts not supported");
             return GLFW_FALSE;
         }
 
@@ -258,22 +256,22 @@ GLFWbool _glfwCreateContextOSMesa(_GLFWwindow* window,
         if (ctxconfig->profile)
         {
             _glfwInputError(GLFW_VERSION_UNAVAILABLE,
-                            "OSMesa: OpenGL profiles unavailable");
+                "OSMesa: OpenGL profiles unavailable");
             return GLFW_FALSE;
         }
 
         window->context.osmesa.handle =
             OSMesaCreateContextExt(OSMESA_RGBA,
-                                   fbconfig->depthBits,
-                                   fbconfig->stencilBits,
-                                   accumBits,
-                                   share);
+                fbconfig->depthBits,
+                fbconfig->stencilBits,
+                accumBits,
+                share);
     }
 
     if (window->context.osmesa.handle == NULL)
     {
         _glfwInputError(GLFW_VERSION_UNAVAILABLE,
-                        "OSMesa: Failed to create context");
+            "OSMesa: Failed to create context");
         return GLFW_FALSE;
     }
 
@@ -289,17 +287,16 @@ GLFWbool _glfwCreateContextOSMesa(_GLFWwindow* window,
 
 #undef setAttrib
 
-
 //////////////////////////////////////////////////////////////////////////
 //////                        GLFW native API                       //////
 //////////////////////////////////////////////////////////////////////////
 
 GLFWAPI int glfwGetOSMesaColorBuffer(GLFWwindow* handle, int* width,
-                                     int* height, int* format, void** buffer)
+    int* height, int* format, void** buffer)
 {
     void* mesaBuffer;
     GLint mesaWidth, mesaHeight, mesaFormat;
-    _GLFWwindow* window = (_GLFWwindow*) handle;
+    _GLFWwindow* window = (_GLFWwindow*)handle;
     assert(window != NULL);
 
     _GLFW_REQUIRE_INIT_OR_RETURN(GLFW_FALSE);
@@ -311,11 +308,11 @@ GLFWAPI int glfwGetOSMesaColorBuffer(GLFWwindow* handle, int* width,
     }
 
     if (!OSMesaGetColorBuffer(window->context.osmesa.handle,
-                              &mesaWidth, &mesaHeight,
-                              &mesaFormat, &mesaBuffer))
+        &mesaWidth, &mesaHeight,
+        &mesaFormat, &mesaBuffer))
     {
         _glfwInputError(GLFW_PLATFORM_ERROR,
-                        "OSMesa: Failed to retrieve color buffer");
+            "OSMesa: Failed to retrieve color buffer");
         return GLFW_FALSE;
     }
 
@@ -332,13 +329,13 @@ GLFWAPI int glfwGetOSMesaColorBuffer(GLFWwindow* handle, int* width,
 }
 
 GLFWAPI int glfwGetOSMesaDepthBuffer(GLFWwindow* handle,
-                                     int* width, int* height,
-                                     int* bytesPerValue,
-                                     void** buffer)
+    int* width, int* height,
+    int* bytesPerValue,
+    void** buffer)
 {
     void* mesaBuffer;
     GLint mesaWidth, mesaHeight, mesaBytes;
-    _GLFWwindow* window = (_GLFWwindow*) handle;
+    _GLFWwindow* window = (_GLFWwindow*)handle;
     assert(window != NULL);
 
     _GLFW_REQUIRE_INIT_OR_RETURN(GLFW_FALSE);
@@ -350,11 +347,11 @@ GLFWAPI int glfwGetOSMesaDepthBuffer(GLFWwindow* handle,
     }
 
     if (!OSMesaGetDepthBuffer(window->context.osmesa.handle,
-                              &mesaWidth, &mesaHeight,
-                              &mesaBytes, &mesaBuffer))
+        &mesaWidth, &mesaHeight,
+        &mesaBytes, &mesaBuffer))
     {
         _glfwInputError(GLFW_PLATFORM_ERROR,
-                        "OSMesa: Failed to retrieve depth buffer");
+            "OSMesa: Failed to retrieve depth buffer");
         return GLFW_FALSE;
     }
 
@@ -372,7 +369,7 @@ GLFWAPI int glfwGetOSMesaDepthBuffer(GLFWwindow* handle,
 
 GLFWAPI OSMesaContext glfwGetOSMesaContext(GLFWwindow* handle)
 {
-    _GLFWwindow* window = (_GLFWwindow*) handle;
+    _GLFWwindow* window = (_GLFWwindow*)handle;
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
 
     if (window->context.source != GLFW_OSMESA_CONTEXT_API)
@@ -383,4 +380,3 @@ GLFWAPI OSMesaContext glfwGetOSMesaContext(GLFWwindow* handle)
 
     return window->context.osmesa.handle;
 }
-
